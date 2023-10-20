@@ -43,7 +43,9 @@ Consider opportunities to reduce repetition in the code and increase legibility
 We also ask that you update the readme with answers to the following questions 
 
 1. Given more time, what other changes you would have liked to make?
+- I have added this in the beginning of this file.
 2. What UX or design improvements or alterations might you suggest? These can be to existing components or completely new ideas.
+- The mortgage area seems that it needs more information. I would add a section that shows the monthly payment, the total amount paid and the total interest paid. I would also add a section that shows the total amount paid for the property, including the mortgage and the original price.
 
 ----
 
