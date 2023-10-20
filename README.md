@@ -1,3 +1,8 @@
+Emanuel's notes:
+1) Immediately upon looking at the property-details/index.js file, I see that things could be written in a more friendly way by using a functional component. An array can be built with the data and then mapped over to create the list of items. This would also allow for the data to be passed in as props, which would be more flexible and allow for the component to be reused. I started doing this by separating things into the array, so that I can easily just add my details into an object instead of manually adding to the whole page content. This makes the code cleaner and ensures the design is respected.
+
+
+
 # Moneyhub Tech Test - Property Details
 
 This is a prototype of a new feature in Moneyhub

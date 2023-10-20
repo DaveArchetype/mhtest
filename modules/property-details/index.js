@@ -4,9 +4,14 @@ import React from "react";
 import { Button } from "../../components/button";
 import RowContainer from "../../components/row-container";
 import {
-  AccountHeadline, AccountLabel, AccountList, AccountListItem, AccountSection, InfoText, Inset
+  AccountHeadline,
+  AccountLabel,
+  AccountList,
+  AccountListItem,
+  AccountSection,
+  InfoText,
+  Inset,
 } from "./style";
-
 
 const account = {
   uid: "65156cdc-5cfd-4b34-b626-49c83569f35e",
@@ -40,59 +45,94 @@ const Detail = ({}) => {
     mortgage = account.associatedMortgages[0];
   }
 
-  return (
-    <Inset>
-      <AccountSection>
-        <AccountLabel>Estimated Value</AccountLabel>
-        <AccountHeadline>
-          {new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-          }).format(account.recentValuation.amount)}
-        </AccountHeadline>
-        <AccountList>
-          <AccountListItem><InfoText>
-            {`Last updated ${format(lastUpdate, "do MMM yyyy")}`}
-          </InfoText></AccountListItem>
-          <AccountListItem><InfoText>
-            {`Next update ${format(
-              add(lastUpdate, { days: account.updateAfterDays }),
-              "do MMM yyyy"
-            )}`}
-          </InfoText></AccountListItem>
-        </AccountList>
-      </AccountSection>
-      <AccountSection>
-        <AccountLabel>Property details</AccountLabel>
+  const sections = [
+    {
+      label: "Estimated Value",
+      hidden: false,
+      content: (
+        <>
+          <AccountHeadline>
+            {new Intl.NumberFormat("en-GB", {
+              style: "currency",
+              currency: "GBP",
+            }).format(account.recentValuation.amount)}
+          </AccountHeadline>
+          <AccountList>
+            <AccountListItem>
+              <InfoText>
+                {`Last updated ${format(lastUpdate, "do MMM yyyy")}`}
+              </InfoText>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>
+                {`Next update ${format(
+                  add(lastUpdate, { days: account.updateAfterDays }),
+                  "do MMM yyyy"
+                )}`}
+              </InfoText>
+            </AccountListItem>
+          </AccountList>
+        </>
+      ),
+    },
+    {
+      label: "Property details",
+      hidden: false,
+      content: (
         <RowContainer>
           <AccountList>
-            <AccountListItem><InfoText>{account.name}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.bankName}</InfoText></AccountListItem>
-            <AccountListItem><InfoText>{account.postcode}</InfoText></AccountListItem>
+            <AccountListItem>
+              <InfoText>{account.name}</InfoText>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>{account.bankName}</InfoText>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>{account.postcode}</InfoText>
+            </AccountListItem>
           </AccountList>
         </RowContainer>
-      </AccountSection>
-      {mortgage && (
-        <AccountSection>
-          <AccountLabel>Mortgage</AccountLabel>
-          <RowContainer
-            // This is a dummy action
-            onClick={() => alert("You have navigated to the mortgage page")}
-          >
-            <AccountList>
-              <AccountListItem><InfoText>
+      ),
+    },
+    {
+      label: "Mortgage",
+      hidden: !mortgage,
+      content: (
+        <RowContainer
+          // This is a dummy action
+          onClick={() => alert("You have navigated to the mortgage page")}
+        >
+          <AccountList>
+            <AccountListItem>
+              <InfoText>
                 {new Intl.NumberFormat("en-GB", {
                   style: "currency",
                   currency: "GBP",
                 }).format(
                   Math.abs(account.associatedMortgages[0].currentBalance)
                 )}
-              </InfoText></AccountListItem>
-              <AccountListItem><InfoText>{account.associatedMortgages[0].name}</InfoText></AccountListItem>
-            </AccountList>
-          </RowContainer>
-        </AccountSection>
-      )}
+              </InfoText>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>{account.associatedMortgages[0].name}</InfoText>
+            </AccountListItem>
+          </AccountList>
+        </RowContainer>
+      ),
+    },
+  ];
+
+  return (
+    <Inset>
+      {sections.map((section) => {
+        return (
+          <AccountSection hidden={section.hidden}>
+            <AccountLabel>{section.label}</AccountLabel>
+            {section.content}
+          </AccountSection>
+        );
+      })}
+
       <Button
         // This is a dummy action
         onClick={() => alert("You have navigated to the edit account page")}
