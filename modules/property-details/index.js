@@ -10,8 +10,25 @@ import {
   AccountListItem,
   AccountSection,
   InfoText,
+  BoldInfoText,
   Inset,
+  Label,
 } from "./style";
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const account = {
   uid: "65156cdc-5cfd-4b34-b626-49c83569f35e",
@@ -44,6 +61,30 @@ const Detail = ({}) => {
   if (account.associatedMortgages.length) {
     mortgage = account.associatedMortgages[0];
   }
+  const purchaseDate = new Date(account.originalPurchasePriceDate);
+  const todayDate = new Date();
+  const yearsSincePurchase =
+    todayDate.getFullYear() - purchaseDate.getFullYear();
+  const sincePurchase =
+    account.recentValuation.amount - account.originalPurchasePrice;
+  const sincePurchasePercentage =
+    (sincePurchase / account.originalPurchasePrice) * 100;
+  const annualAppreciation = sincePurchasePercentage / yearsSincePurchase;
+
+  const originalPurchasePriceString = new Intl.NumberFormat("en-GB", {
+    style: "currency",
+    currency: "GBP",
+  }).format(account.originalPurchasePrice);
+
+  const purchasedString = (
+    <InfoText>
+      Purchased for
+      <BoldInfoText>{originalPurchasePriceString}</BoldInfoText>
+      in {monthNames[purchaseDate.getMonth()]} {purchaseDate.getUTCFullYear()}
+    </InfoText>
+  );
+  const sincePurchaseString = `£${sincePurchase.toLocaleString()} (${sincePurchasePercentage}%)`;
+  const annualAppreciationString = `${annualAppreciation.toFixed(1)}%`;
 
   const sections = [
     {
@@ -120,13 +161,34 @@ const Detail = ({}) => {
         </RowContainer>
       ),
     },
+    {
+      label: "Valuation change",
+      hidden: false,
+      content: (
+        <RowContainer>
+          <AccountList>
+            <AccountListItem>
+              <InfoText>{purchasedString}</InfoText>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>Since purchase</InfoText>
+              <Label>{sincePurchaseString}</Label>
+            </AccountListItem>
+            <AccountListItem>
+              <InfoText>Annual appreciation</InfoText>
+              <Label>{annualAppreciationString}</Label>
+            </AccountListItem>
+          </AccountList>
+        </RowContainer>
+      ),
+    },
   ];
 
   return (
     <Inset>
       {sections.map((section) => {
         return (
-          <AccountSection hidden={section.hidden}>
+          <AccountSection key={section.label} hidden={section.hidden}>
             <AccountLabel>{section.label}</AccountLabel>
             {section.content}
           </AccountSection>
