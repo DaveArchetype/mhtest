@@ -1,6 +1,11 @@
 Emanuel's notes (actions after I have read the README.md):
 1) Immediately upon looking at the property-details/index.js file, I see that things could be written in a more friendly way by using a functional component. An array can be built with the data and then mapped over to create the list of items. This would also allow for the data to be passed in as props, which would be more flexible and allow for the component to be reused. I started doing this by separating things into the array, so that I can easily just add my details into an object instead of manually adding to the whole page content. This makes the code cleaner and ensures the design is respected.
 2) I look carefully on the way that the new component looks and I add the details inside the code to calculate the variables needed, console.log-ing them to make sure that they are correct. I also add the new component to the page and I make sure that it looks as it should.
+3) Since I have already reached 2h of work, and the required specification is met, I have decided to stop here and continue writing what the next steps would be.
+I consider this:
+- in order to do the optional of getting the data from the API, I would use the API call using the /api route of the Next JS app. I would then use the data to populate the page. I would also add a loading state to the page, so that the user knows that the data is being fetched.
+- I would use React State to store the data and then pass it to the component as props. This would allow for the data to be used in other components as well, if needed.
+- All of the calculations would be automatically updated inside a React useEffect hook. This would allow for the data to be updated without the need of refreshing the page. The actual calculation would happen inside separate functions.
 
 
 
